@@ -6,21 +6,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotationConverter {
-    public int toArabic(String romanNotation) throws InvalidValueException {
-        List<Integer> arabicIntegers = convertToListOfArabic(romanNotation);
+
+
+    public int toArabic(String romanNotation) throws InvalidValueException{
+        List<Integer> arabicNumbers = convertToListOfArabic(romanNotation);
         int result = 0;
-        for (int i = 0; i < arabicIntegers.size(); i++) {
-            if (i + 1 == arabicIntegers.size()) {
-                result += arabicIntegers.get(arabicIntegers.size() - 1);
+
+        for (int i = 0; i < arabicNumbers.size(); i++) {
+            if (i + 1 == arabicNumbers.size()) {
+                result += arabicNumbers.get(arabicNumbers.size() - 1);
                 break;
             }
-            if (arabicIntegers.get(i) < arabicIntegers.get(i + 1)) {
-                result -= arabicIntegers.get(i);
-            } else
-                result += arabicIntegers.get(i);
+            if (i+1<arabicNumbers.size()) {
+                if ((arabicNumbers.get(i) < arabicNumbers.get(i + 1))) {
+                    result -= arabicNumbers.get(i);
+                } else
+                    result += arabicNumbers.get(i);
+            }
         }
+
         return result;
     }
+
 
     private List<Integer> convertToListOfArabic(String romanNotation) {
         if (romanNotation == null || romanNotation.equals("")) {
@@ -31,8 +38,10 @@ public class NotationConverter {
         for (char romanChar : romanChars) {
             arabicNumbers.add(getArabicFromRomanChar(romanChar));
         }
+
         return arabicNumbers;
     }
+
 
     private Integer getArabicFromRomanChar(char romanChar) {
         Integer integer = switch (romanChar) {
@@ -45,9 +54,9 @@ public class NotationConverter {
             case 'M' -> 1000;
             default -> null;
         };
-        if (integer == null) {
+        if (integer == null)
             throw new InvalidValueException();
-        }
+
         return integer;
     }
 }
